@@ -1,11 +1,26 @@
 function client(){
   // var connection=new WebSocket('wss://6191df17.ngrok.io');
   var connection=new WebSocket('ws://6191df17.ngrok.io');
-  connection.send('Hello');
-  connection.onmessage=function(e){
+  // var connection=new WebSocket('wss://kayanoma.github.io/websocket_server/');
+  connection.addEventListener("open", e =>{
+    document.getElementById('start').innerText='start';
+    document.getElementById('state').innerText=connection.readyState;
+    connection.send('Hello');
+  });
+  connection.addEventListener("message", e=>{
     document.getElementById('return').innerText=e.data;
-  };
-  connection.close();
+    connection.close;
+  });
+  // connection.onmessage=function(e){
+  //   document.getElementById('return').innerText=e.data;
+  // };
+  // connection.close();
+  // document.getElementById('state').innerText=connection.readyState;
+  // connection.send('Hello');
+  // connection.onmessage=function(e){
+  //   document.getElementById('return').innerText=e.data;
+  // };
+  // connection.close();
 };
 
 
