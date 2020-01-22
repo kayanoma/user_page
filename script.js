@@ -37,7 +37,9 @@ function get_permission(){
       if (response == 'granted') {
         window.addEventListener('devicemotion', (e) => {
           // do something with e
-          document.getElementById('value').innerText=e.acceleration.x;
+          document.getElementById('value_x').innerText=e.acceleration.x;
+          document.getElementById('value_y').innerText=e.acceleration.y;
+          document.getElementById('value_z').innerText=e.acceleration.z;
           // e.acceleration
         })
       }
@@ -45,7 +47,11 @@ function get_permission(){
     .catch(console.error)
   } else {
     // non iOS 13+
-    google()
+    document.getElementById('value_x').innerText='error not ios 13+';
+    document.getElementById('value_y').innerText='';
+    document.getElementById('value_z').innerText='';
+    // document.getElementById('value_y').innerText='error not ios 13+';
+    // document.getElementById('value_z').innerText='error not ios 13+';
   }
 };
 
