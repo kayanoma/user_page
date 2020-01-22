@@ -29,6 +29,26 @@
 //   }
 // }
 
+function get_permission(){
+  if (typeof DeviceMotionEvent.requestPermission === 'function') {
+    // iOS 13+
+    DeviceMotionEvent.requestPermission()
+    .then(response => {
+      if (response == 'granted') {
+        window.addEventListener('devicemotion', (e) => {
+          // do something with e
+          document.getElementById('value').innerText=e.acceleration.x;
+          // e.acceleration
+        })
+      }
+    })
+    .catch(console.error)
+  } else {
+    // non iOS 13+
+    google()
+  }
+};
+
 // ボタンクリックでrequestDeviceMotionPermission実行
 // const startButton = document.getElementById("start-button")
 // startButton.addEventListener('click', requestDeviceMotionPermission, false)
