@@ -46,12 +46,14 @@ function send_data(id){
             window.addEventListener('devicemotion', (e) => {
               // do something with e
               times={
+                "abs_time":Date.now(),
                 "time":Date.now()-start,
                 "delta_t":Date.now()-now
               }
+              document.getElementById('abs_time').innerText=times.abs_time;
               document.getElementById('time').innerText=times.time;
               document.getElementById('delta_t').innerText=times.delta_t;
-              // document.getElementById('time').innerText=Date.now()-start;
+              // document.getElementById('time').i.innerText=Date.now()-start;
               // document.getElementById('delta_t').innerText=Date.now()-now;
               now=Date.now();
               accel={
@@ -63,7 +65,7 @@ function send_data(id){
               //   "times":times,
               //   "accel":accel
               // }
-              data=[id, times.time, times.delta_t, accel.x, accel.y, accel.z];
+              data=[id, times.abs_time, times.time, times.delta_t, accel.x, accel.y, accel.z];
               
               document.getElementById('value_x').innerText=accel.x;
               document.getElementById('value_y').innerText=accel.y;
