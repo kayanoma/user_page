@@ -41,7 +41,9 @@ function send_data(id){
         var accel;
         if (response == 'granted') {
           var ws;
+          document.getElementById('console').innerText=ws.readyState;
           ws=new WebSocket(URL);
+          document.getElementById('console').innerText=ws.readyState;
             window.addEventListener('devicemotion', (e) => {
               // do something with e
               times={
