@@ -1,50 +1,24 @@
 
 var URL
-function client(){
-  var connection=new WebSocket('https://6191df17.ngrok.io');
-  connection.addEventListener("open", e =>{
-    document.getElementById('start').innerText='start';
-    document.getElementById('state').innerText=connection.readyState;
-    connection.send('Hello');
-  });
-  connection.addEventListener("message", e=>{
-    document.getElementById('return').innerText=e.data;
-    connection.close;
-  });
-};
-
-
-
-function get_permission(){
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    // iOS 13+
-    DeviceMotionEvent.requestPermission()
-    .then(response => {
-      const start=Date.now();
-      var now=start;
-      if (response == 'granted') {
-        
-        window.addEventListener('devicemotion', (e) => {
-          // do something with e
-          document.getElementById('time').innerText=Date.now()-start;
-          document.getElementById('delta_t').innerText=Date.now()-now;
-          now=Date.now();
-          document.getElementById('value_x').innerText=e.acceleration.x;
-          document.getElementById('value_y').innerText=e.acceleration.y;
-          document.getElementById('value_z').innerText=e.acceleration.z;
-          // e.acceleration
-        })
-      }
-    })
-    .catch(console.error)
-  } else {
-    // non iOS 13+
-    document.getElementById('value_x').innerText='error not ios 13+';
-    document.getElementById('value_y').innerText='';
-    document.getElementById('value_z').innerText='';
-  }
-};
-
+function readTextFile(file)
+{
+    var rawFile = new XMLHttpRequest();
+    rawFile.open("GET", file, false);
+    rawFile.onreadystatechange = function ()
+    {
+        if(rawFile.readyState === 4)
+        {
+            if(rawFile.status === 200 || rawFile.status == 0)
+            {
+                var allText = rawFile.responseText;
+                // alert(allText);
+                URL = allText
+            }
+        }
+    }
+    rawFile.send(null);
+}
+// readTextFile("./url.txt")
 
 function getURL(){
   URL=document.getElementById('URL').value;
@@ -54,85 +28,57 @@ function getURL(){
   document.getElementById('check').innerText=URL;
 }
 
-function get_permission2(){
+function send_data(id){
   if (typeof DeviceMotionEvent.requestPermission === 'function') {
     // iOS 13+
-    
-    const io= require('./../set_up.js');
-    window.open(URL)
-      io.on('connection', (socket)=>{
-        console.log('made socket connection', socket.id);
-    
-        socket.on('echo', (arg) => {
-            console.log(arg);
-        })
-        socket.on('disconnect', () => {
-            console.log('disconnect');
-        });
-
-        DeviceMotionEvent.requestPermission()
-        .then(response => {
-      
-          const start=Date.now();
-          var now=start;
-          if (response == 'granted') {
-            
-            window.addEventListener('devicemotion', (e) => {
-              // do something with e
-              document.getElementById('time').innerText=Date.now()-start;
-              document.getElementById('delta_t').innerText=Date.now()-now;
-              now=Date.now();
-              document.getElementById('value_x').innerText=e.acceleration.x;
-              document.getElementById('value_y').innerText=e.acceleration.y;
-              document.getElementById('value_z').innerText=e.acceleration.z;
-              io.emit('accel', e.acceleration);
-            })
-          }
-        })
-        .catch(console.error)
-        // socket.on('client', (obj)=>{
-        //     obj.x;
-        //     obj.y;
-        //     obj.z;
-        // });
-    });
-  } else {
-    // non iOS 13+
-    document.getElementById('value_x').innerText='error not ios 13+';
-    document.getElementById('value_y').innerText='';
-    document.getElementById('value_z').innerText='';
-  }
-};
-
-function get_permission3(){
-  if (typeof DeviceMotionEvent.requestPermission === 'function') {
-    // iOS 13+
-
-
       DeviceMotionEvent.requestPermission()
       .then(response => {
     
         const start=Date.now();
         var now=start;
+        var data;
+        var times;
+        var accel;
         if (response == 'granted') {
           var ws;
-          ws=new WebSocket(URL);
-          window.addEventListener('devicemotion', (e) => {
-            // do something with e
-            document.getElementById('time').innerText=Date.now()-start;
-            document.getElementById('delta_t').innerText=Date.now()-now;
-            now=Date.now();
-            document.getElementById('value_x').innerText=e.acceleration.x;
-            document.getElementById('value_y').innerText=e.acceleration.y;
-            document.getElementById('value_z').innerText=e.acceleration.z;
-            
-
-            ws.onopen=function(){
-              ws.send(e);
+          ws=new WebSocket(URL, ['echo-protocol','soap', 'xmpp']);
+          ws.onopen=function(){
+            window.addEventListener('devicemotion', (e) => {
+              // do something with e
+              times={
+                "time":Date.now()-start,
+                "delta_t":Date.now()-now
+              }
+              document.getElementById('time').innerText=times.time;
+              document.getElementById('delta_t').innerText=times.delta_t;
+              // document.getElementById('time').innerText=Date.now()-start;
+              // document.getElementById('delta_t').innerText=Date.now()-now;
+              now=Date.now();
+              accel={
+                "x":e.acceleration.x,
+                "y" :e.acceleration.y,
+                "z" :e.acceleration.z
+              }
+              // data={
+              //   "times":times,
+              //   "accel":accel
+              // }
+              data=[id, times.time, times.delta_t, accel.x, accel.y, accel.z];
+              
+              document.getElementById('value_x').innerText=accel.x;
+              document.getElementById('value_y').innerText=accel.y;
+              document.getElementById('value_z').innerText=accel.z;
+              // document.getElementById('value_x').innerText=e.acceleration.x;
+              // document.getElementById('value_y').innerText=e.acceleration.y;
+              // document.getElementById('value_z').innerText=e.acceleration.z;
+              
+              ws.send(data);
               setTimeout(send, 100)
               document.getElementById('state').innerText=send;
-            }
-          })
+            });
+          }
+          // 受け取ったデータからグラフ作成
+          
         }
       })
       .catch(console.error)

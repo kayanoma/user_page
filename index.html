@@ -8,22 +8,27 @@
 </head>
 
 <body>
+
     <textarea id="URL"></textarea>
     <input type="button" id="send" value="決定" onclick="getURL()">
-    <p id="check"></p>
-    <input type="button" id="acceleration" value="計測開始" onclick="get_permission3()">
+
+    <input type="button" id="1" value="計測開始 id=1" onclick="send_data(1)">
+    <input type="button" id="2" value="計測開始 id=2" onclick="send_data(2)">
+    <input type="button" id="3" value="計測開始 id=3" onclick="send_data(3)">
+    <input type="button" id="4" value="計測開始 id=4" onclick="send_data(4)">
+    <input type="button" id="5" value="計測開始 id=5" onclick="send_data(5)">
+    
     <p id="time">time</p>
     <p id="delta_t">delta_t</p>
     <p id="value_x">acceleration x</p>
     <p id="value_y">acceleration y</p>
     <p id="value_z">acceleration z</p>
-    <input type="button" id="client" value="Hello" onclick="client()">
-    <p id="other_value_x">acceleration x</p>
-    <p id="other_value_y">acceleration y</p>
-    <p id="other_value_z">acceleration z</p>
+
+    <!-- 以下は未実装 -->
+    <!-- 接続時にstart,終了時にend -->
     <p id="start">not start</p>
+    <!-- 接続状態はconnected, そうでないときにはnot connected -->
     <p id="state">state</p>
-    <p id="return">return</p>
     
 </body>
 </html>
