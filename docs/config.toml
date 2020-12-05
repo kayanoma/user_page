@@ -1,4 +1,4 @@
-baseURL = "https://kayanoma.github.io/user_page/"
+baseURL = "https://kayanoma.github.io"
 languageCode = "ja"
 title = "My Page"
 contentDir = "post"
