@@ -1,0 +1,8 @@
+baseURL = "https://kayanoma.github.io/user_page/"
+languageCode = "ja"
+title = "Yボタンがネギに見える"
+contentDir = "post"
+disableKinds = ["RSS", "sitemap"]
+theme = "ananke"
+[taxonomies]
+tag = "tags"
